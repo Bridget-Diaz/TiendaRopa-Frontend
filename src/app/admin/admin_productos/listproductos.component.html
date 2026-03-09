@@ -1,0 +1,68 @@
+<!-- src/app/admin/productos/lista-productos/lista-productos.component.html -->
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>Lista de Productos</h2>
+    <button class="btn-nuevo" routerLink="/admin/productos/nuevo">
+      + Nuevo Producto
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Cargando productos...</div>
+
+  <!-- Tabla -->
+  <div class="table-wrapper" *ngIf="!loading">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of productos">
+          <td>{{ p.idProducto }}</td>
+          <td class="nombre-col">{{ p.nombre }}</td>
+          <td>{{ p.nombreCategoria }}</td>
+          <td>S/. {{ p.precio | number:'1.2-2' }}</td>
+          <td>
+            <span [class]="p.stock > 5 ? 'badge-ok' : 'badge-warn'">
+              {{ p.stock }}
+            </span>
+          </td>
+          <td>
+            <span [class]="p.activo ? 'badge-activo' : 'badge-inactivo'">
+              {{ p.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="acciones">
+            <button class="btn-editar"
+              [routerLink]="['/admin/productos/editar', p.idProducto]">
+              ✏️ Editar
+            </button>
+            <button class="btn-toggle"
+              (click)="toggleActivo(p)">
+              {{ p.activo ? '🔴 Desactivar' : '🟢 Activar' }}
+            </button>
+            <button class="btn-eliminar"
+              (click)="confirmarEliminar(p)">
+              🗑️ Eliminar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="productos.length === 0">
+          <td colspan="7" class="empty">No hay productos registrados</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="total-registros">Mostrando {{ productos.length }} productos</p>
+  </div>
+
+</div>

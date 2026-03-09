@@ -1,0 +1,54 @@
+<!-- ================= CAROUSEL ================= -->
+<section class="carousel">
+  <img [src]="banners[index]" alt="Banner">
+</section>
+
+<!-- ================= INFO ICONS ================= -->
+<section class="info">
+  <div class="info-card" *ngFor="let item of info">
+    <img [src]="item.icon" alt="icon">
+    <p class="info-number">{{ item.number }}</p>
+    <p class="info-text">{{ item.text }}</p>
+  </div>
+</section>
+
+<!-- ================= CATEGORÍAS ================= -->
+<h2 class="section-title">EXPLORA NUESTRAS CATEGORÍAS</h2>
+<section class="categories">
+  <div class="category-card" *ngFor="let cat of categories" (click)="navegarCategoria(cat)">
+    <img [src]="cat.image" [alt]="cat.name" style="cursor: pointer;">
+    <span>{{ cat.name }}</span>
+  </div>
+</section>
+<button class="main-btn" routerLink="/producto">VER TODAS LAS CATEGORÍAS &gt;</button>
+
+<!-- ================= PRODUCTOS ================= -->
+<h2 class="section-title small">NUESTROS PACKS MÁS POPULARES</h2>
+<section class="products">
+  <div class="product-card" *ngFor="let product of products">
+    <img 
+      [src]="product.imagenesUrl?.[0] || 'assets/img/productos/default-1.jpg'" 
+      [alt]="product.nombre"
+      (click)="verDetalle(product)"
+      (error)="onImageError($event)"
+      style="cursor: pointer;">
+    <p class="product-name">{{ product.nombre }}</p>
+    <p class="product-price">S/ {{ product.precio.toFixed(2) }}</p>
+    <button class="black-btn" (click)="agregarCarrito(product)">AGREGAR AL CARRITO</button>
+  </div>
+</section>
+<button class="main-btn" routerLink="/producto">VER TODA LA COLECCIÓN &gt;</button>
+
+<!-- ================= PACKS ================= -->
+<h2 class="section-title small">ARMA TU PACK PERFECTO</h2>
+<section class="packs">
+  <div class="pack-card" *ngFor="let pack of packs">
+    <img class="step" [src]="pack.step">
+    <h3>{{ pack.title }}</h3>
+    <p>{{ pack.text }}</p>
+    <img class="pack-img" [src]="pack.image" (click)="verDetallePack(pack)" style="cursor: pointer;">
+    <button class="pack-btn" (click)="agregarCarritoPack(pack)">{{ pack.buttonText }}</button>
+  </div>
+</section>
+
+<app-footer></app-footer>

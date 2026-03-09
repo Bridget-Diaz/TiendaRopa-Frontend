@@ -1,0 +1,28 @@
+<div class="admin-header">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2 class="logo">ADMIN</h2>
+    <nav>
+      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/admin/productos" routerLinkActive="active">Productos</a>
+      <a routerLink="/admin/categorias" routerLinkActive="active">Categorías</a>
+      <a routerLink="/admin/usuarios" routerLinkActive="active">Usuarios</a>
+      <a routerLink="/admin/reportes"   routerLinkActive="active">Reportes</a>
+      <a (click)="logout()">Cerrar sesión</a>
+    </nav>
+  </div>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="profile" (click)="toggleMenu()">
+      <img src="assets/img/login/menuAdmin.png" class="avatar" />
+
+      <div class="dropdown" *ngIf="menuOpen">
+        <a routerLink="/perfil">Ver perfil</a>
+        <button (click)="logout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+
+</div>

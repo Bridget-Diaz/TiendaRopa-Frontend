@@ -1,0 +1,87 @@
+<!-- src/app/admin/productos/form-producto/form-producto.component.html -->
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>{{ esEdicion ? 'Actualizar Producto' : 'Nuevo Producto' }}</h2>
+    <button class="btn-volver" routerLink="/admin/productos">
+      ← Lista de Productos
+    </button>
+  </div>
+
+  <div class="form-card">
+    <form (ngSubmit)="guardar()">
+
+      <div class="form-section">
+        <h3>Datos del producto</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" [(ngModel)]="form.nombre"
+              name="nombre" placeholder="Ingresa el nombre" required />
+          </div>
+
+          <div class="form-group">
+            <label>Categoría *</label>
+            <select [(ngModel)]="form.idCategoria" name="idCategoria" required>
+              <option [ngValue]="null" disabled>Seleccionar</option>
+              <option *ngFor="let c of categorias" [ngValue]="c.idCategoria">{{ c.nombreCategoria }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea [(ngModel)]="form.descripcion"
+            name="descripcion" rows="3"
+            placeholder="Descripción del producto..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Precio *</label>
+            <input type="number" [(ngModel)]="form.precio"
+              name="precio" placeholder="0.00" step="0.01" required />
+          </div>
+
+          <div class="form-group">
+            <label>Precio con descuento</label>
+            <input type="number" [(ngModel)]="form.precioDescuento"
+              name="precioDescuento" placeholder="0.00" step="0.01" />
+          </div>
+
+          <div class="form-group">
+            <label>Stock *</label>
+            <input type="number" [(ngModel)]="form.stock"
+              name="stock" placeholder="0" required />
+          </div>
+        </div>
+
+        <div class="form-row checkboxes">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="form.activo" name="activo" />
+            Activo
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="form.destacado" name="destacado" />
+            Destacado
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="form.nuevo" name="nuevo" />
+            Nuevo
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancelar"
+          routerLink="/admin/productos">Cancelar</button>
+        <button type="submit" class="btn-guardar" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : (esEdicion ? 'Actualizar' : 'Guardar') }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>

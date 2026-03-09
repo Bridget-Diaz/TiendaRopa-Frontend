@@ -1,0 +1,134 @@
+<!-- src/app/admin/admin_pedidos/lista-pedidos.component.html -->
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>Gestión de Pedidos</h2>
+    <span class="total-badge">{{ pedidos.length }} pedidos</span>
+  </div>
+
+  <!-- Filtros por estado -->
+  <div class="filtros">
+    <button *ngFor="let f of filtros"
+      [class]="'filtro-btn ' + (filtroActivo === f.valor ? 'activo' : '')"
+      (click)="filtrar(f.valor)">
+      {{ f.label }} <span class="count">{{ contarPorEstado(f.valor) }}</span>
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Cargando pedidos...</div>
+
+  <div class="table-wrapper" *ngIf="!loading">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cliente</th>
+          <th>Ciudad</th>
+          <th>Total</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of pedidosFiltrados">
+          <td><strong>#{{ p.idPedido }}</strong></td>
+          <td>
+            <div class="cliente-info">
+              <span class="cliente-nombre">{{ p.nombreCliente }}</span>
+              <span class="cliente-email">{{ p.emailCliente }}</span>
+            </div>
+          </td>
+          <td>{{ p.ciudad }}</td>
+          <td><strong>S/. {{ p.total | number:'1.2-2' }}</strong></td>
+          <td>{{ p.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>
+            <span [class]="'badge badge-' + getEstadoClass(p.estado)">
+              {{ getEstadoLabel(p.estado) }}
+            </span>
+          </td>
+          <td class="acciones">
+            <button class="btn-ver" (click)="verDetalle(p)">👁️ Ver</button>
+            <button class="btn-avanzar"
+              *ngIf="puedeAvanzar(p.estado)"
+              (click)="avanzarEstado(p)">
+              ➡️ {{ getSiguienteEstadoLabel(p.estado) }}
+            </button>
+            <button class="btn-cancelar-pedido"
+              *ngIf="puedeCancelar(p.estado)"
+              (click)="cancelarPedido(p)">
+              ❌ Cancelar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="pedidosFiltrados.length === 0">
+          <td colspan="7" class="empty">No hay pedidos con este estado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal detalle pedido -->
+  <div class="modal-overlay" *ngIf="pedidoSeleccionado" (click)="cerrarDetalle()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Pedido #{{ pedidoSeleccionado.idPedido }}</h3>
+        <button class="modal-close" (click)="cerrarDetalle()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-info-grid">
+          <div><span class="info-label">Cliente</span><span>{{ pedidoSeleccionado.nombreCliente }}</span></div>
+          <div><span class="info-label">Email</span><span>{{ pedidoSeleccionado.emailCliente }}</span></div>
+          <div><span class="info-label">Ciudad</span><span>{{ pedidoSeleccionado.ciudad }}</span></div>
+          <div><span class="info-label">Entrega</span><span>{{ pedidoSeleccionado.tipoEntrega }}</span></div>
+          <div><span class="info-label">Total</span><span><strong>S/. {{ pedidoSeleccionado.total | number:'1.2-2' }}</strong></span></div>
+          <div><span class="info-label">Estado</span>
+            <span [class]="'badge badge-' + getEstadoClass(pedidoSeleccionado.estado)">
+              {{ getEstadoLabel(pedidoSeleccionado.estado) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Timeline de estado -->
+        <div class="timeline">
+          <div *ngFor="let e of estadosTimeline; let i = index"
+            [class]="'timeline-step ' + getTimelineClass(e.key, pedidoSeleccionado.estado)">
+            <div class="timeline-icon">{{ e.icon }}</div>
+            <div class="timeline-label">{{ e.label }}</div>
+          </div>
+        </div>
+
+        <!-- Items del pedido -->
+        <h4 class="items-title">Productos</h4>
+        <table class="items-table">
+          <thead>
+            <tr><th>Producto</th><th>Talla</th><th>Cant.</th><th>Precio</th><th>Subtotal</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of pedidoSeleccionado.items">
+              <td>{{ item.nombreProducto }}</td>
+              <td>{{ item.talla || '—' }}</td>
+              <td>{{ item.cantidad }}</td>
+              <td>S/. {{ item.precioUnitario | number:'1.2-2' }}</td>
+              <td>S/. {{ item.subtotal | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cambiar estado desde el modal -->
+      <div class="modal-footer" *ngIf="pedidoSeleccionado.estado !== 'ENTREGADO' && pedidoSeleccionado.estado !== 'CANCELADO'">
+        <select [(ngModel)]="nuevoEstado" class="select-estado">
+          <option value="">-- Cambiar estado --</option>
+          <option *ngFor="let e of estadosDisponibles(pedidoSeleccionado.estado)" [value]="e.key">
+            {{ e.label }}
+          </option>
+        </select>
+        <button class="btn-cambiar" (click)="cambiarEstado(pedidoSeleccionado)" [disabled]="!nuevoEstado">
+          Actualizar estado
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

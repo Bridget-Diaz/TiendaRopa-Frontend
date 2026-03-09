@@ -1,0 +1,65 @@
+
+<div class="pedidos-page">
+
+  <div class="pedidos-header">
+    <button class="btn-back" (click)="irAlInicio()">←</button>
+    <h1 class="titulo">MIS PEDIDOS</h1>
+  </div>
+
+  <!-- LOADING -->
+  <div class="estado-centro" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando tus pedidos...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div class="estado-centro" *ngIf="error && !loading">
+    <p class="error-msg">{{ error }}</p>
+    <button class="btn-accion" (click)="cargarPedidos()">Reintentar</button>
+  </div>
+
+  <!-- VACÍO -->
+  <div class="estado-centro vacio" *ngIf="!loading && !error && pedidos.length === 0">
+    <div class="vacio-icono">📦</div>
+    <h2>Aún no tienes pedidos</h2>
+    <p>¡Explora nuestro catálogo y haz tu primer pedido!</p>
+    <button class="btn-accion" (click)="seguirComprando()">Ver productos</button>
+  </div>
+
+  <!-- LISTA DE PEDIDOS -->
+  <div class="pedidos-lista" *ngIf="!loading && !error && pedidos.length > 0">
+
+    <div class="pedido-card" *ngFor="let pedido of pedidos"
+     (click)="verDetalle(pedido.idPedido)"
+     style="cursor:pointer">
+
+      <div class="pedido-top">
+        <div class="pedido-numero">
+          <span class="label">Pedido</span>
+          <span class="numero">#{{ pedidos.indexOf(pedido) + 1 }}</span>
+        </div>
+        <span class="estado-badge" [ngClass]="getEstadoClass(pedido.estado)">
+          {{ getEstadoLabel(pedido.estado) }}
+        </span>
+      </div>
+
+      <div class="pedido-detalles">
+        <div class="detalle-item">
+          <span class="detalle-label">Fecha</span>
+          <span class="detalle-valor">{{ pedido.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Método de pago</span>
+          <span class="detalle-valor">{{ pedido.metodoPago === 'YAPE' ? '📱 YAPE' : '💳 TARJETA' }}</span>
+        </div>
+        <div class="detalle-item">
+          <span class="detalle-label">Total</span>
+          <span class="detalle-valor total">S/ {{ pedido.total | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

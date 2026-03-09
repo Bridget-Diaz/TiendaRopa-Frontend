@@ -1,0 +1,50 @@
+<div class="perfil-wrapper">
+
+  <div class="perfil-card">
+
+    <!-- Avatar -->
+    <div class="avatar">
+      {{ inicial }}
+    </div>
+
+    <!-- Nombre -->
+    <h2 class="nombre">
+      {{ perfil.nombre }} {{ perfil.apellido }}
+    </h2>
+
+    <span class="rol-chip">
+      {{ perfil.rol | uppercase }}
+    </span>
+
+    <!-- Info -->
+    <div class="info">
+
+      <div class="info-item">
+        <span class="label">Email</span>
+        <span class="value">{{ perfil.email }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Fecha de registro</span>
+        <span class="value">
+          {{ perfil.fechaRegistro | date:'dd/MM/yyyy HH:mm' }}
+        </span>
+      </div>
+
+    </div>
+          <!-- Acciones -->
+    <button class="pedidos-btn" (click)="irMisPedidos()">
+      📦 Mis pedidos
+    </button>
+
+    <!-- Acciones -->
+    <button class="logout-btn" (click)="logout()">
+      Cerrar sesión
+    </button>
+
+  </div>
+
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>

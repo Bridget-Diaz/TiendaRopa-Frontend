@@ -1,0 +1,88 @@
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<header class="header">
+  <!-- Logo clickeable que siempre lleva al home -->
+  <div class="logo" (click)="irHome()" style="cursor: pointer;">
+    TRAP CLOSET
+  </div>
+
+  <!-- Menú -->
+  <nav class="menu">
+    <a (click)="irHome()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      INICIO
+    </a>
+    <a routerLink="/nosotros" routerLinkActive="active">
+      NOSOTROS
+    </a>
+
+    <!-- Dropdown de categorías -->
+    <div class="dropdown">
+      <a class="dropdown-toggle" (click)="toggleDropdown()">
+        CATEGORÍA
+        <span class="arrow">{{ dropdownOpen ? '▲' : '▼' }}</span>
+      </a>
+      <div class="dropdown-menu" [class.show]="dropdownOpen">
+        <a 
+          *ngFor="let cat of categorias" 
+          (click)="irCategoria(cat)">
+          {{ cat.nombreCategoria }}
+        </a>
+      </div>
+    </div>
+
+    <a routerLink="/contactanos" routerLinkActive="active">
+      CONTÁCTANOS
+    </a>
+  </nav>
+
+  <!-- Buscador -->
+  <div class="search-box">
+    <input 
+      type="text" 
+      placeholder="Buscar productos..." 
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="buscarProductos()"
+      (input)="onSearchInput()"
+    />
+    <img 
+      src="assets/img/ico_lupa.png" 
+      alt="Buscar" 
+      class="icon search-icon"
+      (click)="buscarProductos()"
+    />
+    
+    <div class="search-suggestions" *ngIf="sugerencias.length > 0 && searchTerm.length > 0">
+      <div 
+        class="suggestion-item" 
+        *ngFor="let sugerencia of sugerencias"
+        (click)="seleccionarSugerencia(sugerencia)">
+        <img 
+          [src]="sugerencia.imagenesUrl?.[0] || 'assets/img/productos/default-1.jpg'" 
+          [alt]="sugerencia.nombre"
+          class="suggestion-img">
+        <div class="suggestion-info">
+          <p class="suggestion-name">{{ sugerencia.nombre }}</p>
+          <p class="suggestion-price">S/ {{ sugerencia.precio.toFixed(2) }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Iconos -->
+  <div class="icons">
+    <!-- Carrito -->
+    <div class="icon-wrapper" (click)="irCarrito()">
+      <img src="assets/img/ico_carrito.png" class="icon" alt="Carrito">
+      <span class="badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+    </div>
+
+<!-- Usuario -->
+<img
+  src="assets/img/ico_usuario.png"
+  class="icon"
+  alt="Usuario"
+  style="cursor:pointer"
+  (click)="irPerfil()"
+/>
+  </div>
+</header>

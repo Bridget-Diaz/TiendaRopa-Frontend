@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+/* VARIABLES */
+:root {
+  --rojo-vino: #8B0000;
+  --negro: #000000;
+  --blanco: #ffffff;
+}
+
+/* ESTILOS GENERALES */
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--negro);
+  color: var(--blanco);
+}
+
+/* HERO */
+.nosotros-hero {
+  background: var(--negro);
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.nosotros-hero h1 {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: var(--blanco);
+}
+
+.nosotros-hero h1 span {
+  color: var(--rojo-vino);
+}
+
+.nosotros-hero p {
+  font-size: 1.2rem;
+  color: var(--blanco);
+  margin-bottom: 30px;
+}
+
+.nosotros-hero img {
+  max-width: 300px;
+  width: 80%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255,0,0,0.5);
+  margin: 0 auto;
+  display: block;
+}
+
+/* Misión y Visión */
+.nosotros-mision-vision {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding: 60px 20px;
+  background: var(--negro);
+}
+
+.nosotros-mision-vision .card {
+  background: var(--negro);
+  color: var(--blanco);
+  padding: 25px;
+  border-radius: 15px;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(255,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nosotros-mision-vision .card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(255,0,0,0.4);
+}
+
+.nosotros-mision-vision .card img {
+  width: 70px;
+  margin-bottom: 15px;
+}
+
+/* Valores */
+.nosotros-valores {
+  background: var(--negro);
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--blanco);
+}
+
+.valores-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.valor {
+  max-width: 150px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.valor img {
+  width: 60px;
+  margin-bottom: 10px;
+  border: 2px solid var(--rojo-vino);
+}
+
+.valor p {
+  color: var(--blanco);
+  font-weight: bold;
+}
+
+.valor:hover {
+  transform: scale(1.15);
+}
+
+/* Galería */
+.nosotros-galeria {
+  padding: 80px 20px;
+  text-align: center;
+  background: var(--negro);
+}
+
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.galeria-grid img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid var(--rojo-vino);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.galeria-grid img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255,0,0,0.4);
+}

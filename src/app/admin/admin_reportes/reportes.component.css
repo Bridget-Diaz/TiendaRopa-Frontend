@@ -1,0 +1,97 @@
+/* reportes.component.css */
+.page-container { padding: 24px; background: #f5f5f5; min-height: 100%; }
+
+.page-header { margin-bottom: 24px; }
+.page-header h2 { color: #601C1D; font-size: 22px; font-weight: 700; margin: 0 0 4px; }
+.subtitle { font-size: 14px; color: #888; }
+.loading { padding: 60px; text-align: center; color: #601C1D; font-size: 16px; }
+
+/* KPIs */
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin-bottom: 24px;
+}
+.kpi-card {
+  background: white; border-radius: 12px;
+  padding: 24px; display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.kpi-icon  { font-size: 32px; }
+.kpi-valor { font-size: 28px; font-weight: 800; color: #601C1D; }
+.kpi-label { font-size: 13px; color: #888; font-weight: 600; }
+
+/* Chart card */
+.chart-card {
+  background: white; border-radius: 12px;
+  padding: 24px; margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.chart-card h3 { color: #333; font-size: 16px; font-weight: 700; margin: 0 0 24px; }
+
+/* Bar chart */
+.chart-wrapper { overflow-x: auto; }
+.bar-chart {
+  display: flex; align-items: flex-end; gap: 16px;
+  height: 220px; padding: 0 8px; min-width: 300px;
+}
+.bar-col {
+  display: flex; flex-direction: column;
+  align-items: center; flex: 1; min-width: 60px;
+}
+.bar-label-top {
+  font-size: 11px; font-weight: 700; color: #601C1D;
+  margin-bottom: 6px; white-space: nowrap;
+}
+.bar-track {
+  width: 40px; height: 140px;
+  background: #f0e8e8; border-radius: 6px 6px 0 0;
+  display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
+}
+.bar-fill {
+  background: linear-gradient(180deg, #8b2c2e, #601C1D);
+  border-radius: 6px 6px 0 0;
+  transition: height 0.6s ease;
+  min-height: 4px;
+}
+.bar-label-bottom {
+  margin-top: 8px; font-size: 12px; font-weight: 600;
+  color: #555; text-align: center;
+}
+.bar-pedidos { font-size: 11px; color: #999; margin-top: 2px; }
+
+.empty-chart { text-align: center; color: #aaa; padding: 40px; font-size: 14px; }
+
+/* Productos más vendidos */
+.productos-list { display: flex; flex-direction: column; gap: 12px; }
+
+.producto-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; border-radius: 8px; background: #fafafa;
+}
+.producto-row:hover { background: #fdf5f5; }
+
+.producto-rank {
+  font-size: 20px; min-width: 40px; text-align: center;
+}
+.producto-rank.top { font-size: 24px; }
+
+.producto-info { flex: 1; min-width: 0; }
+.producto-nombre {
+  font-size: 14px; font-weight: 600; color: #333;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  display: block; margin-bottom: 6px;
+}
+.barra-track {
+  height: 6px; background: #f0e8e8; border-radius: 3px; overflow: hidden;
+}
+.barra-fill {
+  height: 100%; background: linear-gradient(90deg, #601C1D, #8b2c2e);
+  border-radius: 3px; transition: width 0.6s ease;
+}
+
+.producto-stats {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px; min-width: 90px;
+}
+.stat-cant  { font-size: 13px; font-weight: 700; color: #601C1D; }
+.stat-total { font-size: 11px; color: #888; }

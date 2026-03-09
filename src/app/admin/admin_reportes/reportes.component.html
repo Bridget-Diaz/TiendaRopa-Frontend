@@ -1,0 +1,78 @@
+<!-- src/app/admin/admin_reportes/reportes.component.html -->
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>Reportes</h2>
+    <span class="subtitle">Resumen del negocio</span>
+  </div>
+
+  <div *ngIf="loading" class="loading">Generando reportes...</div>
+
+  <ng-container *ngIf="!loading">
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-icon">💰</span>
+        <span class="kpi-valor">S/. {{ totalIngresos | number:'1.2-2' }}</span>
+        <span class="kpi-label">Ingresos Totales</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🛒</span>
+        <span class="kpi-valor">{{ totalPedidos }}</span>
+        <span class="kpi-label">Pedidos Completados</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🎯</span>
+        <span class="kpi-valor">S/. {{ ticketPromedio | number:'1.2-2' }}</span>
+        <span class="kpi-label">Ticket Promedio</span>
+      </div>
+    </div>
+
+    <!-- Gráfico ingresos por mes -->
+    <div class="chart-card">
+      <h3>📈 Ingresos por Mes</h3>
+      <div class="chart-wrapper" *ngIf="ingresosPorMes.length > 0">
+        <div class="bar-chart">
+          <div *ngFor="let m of ingresosPorMes" class="bar-col">
+            <div class="bar-label-top">S/. {{ m.total | number:'1.0-0' }}</div>
+            <div class="bar-track">
+              <div class="bar-fill" [style.height.%]="m.porcentaje"></div>
+            </div>
+            <div class="bar-label-bottom">{{ m.mes }}</div>
+            <div class="bar-pedidos">{{ m.pedidos }} pedidos</div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="ingresosPorMes.length === 0" class="empty-chart">
+        No hay datos suficientes aún
+      </div>
+    </div>
+
+    <!-- Productos más vendidos -->
+    <div class="chart-card">
+      <h3>🏆 Productos Más Vendidos</h3>
+      <div *ngIf="productosTop.length > 0" class="productos-list">
+        <div *ngFor="let p of productosTop; let i = index" class="producto-row">
+          <div class="producto-rank" [class]="i < 3 ? 'top' : ''">
+            {{ i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + (i+1) }}
+          </div>
+          <div class="producto-info">
+            <span class="producto-nombre">{{ p.nombre }}</span>
+            <div class="barra-track">
+              <div class="barra-fill" [style.width.%]="p.porcentaje"></div>
+            </div>
+          </div>
+          <div class="producto-stats">
+            <span class="stat-cant">{{ p.cantidad }} uds.</span>
+            <span class="stat-total">S/. {{ p.total | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="productosTop.length === 0" class="empty-chart">
+        No hay ventas registradas aún
+      </div>
+    </div>
+
+  </ng-container>
+</div>

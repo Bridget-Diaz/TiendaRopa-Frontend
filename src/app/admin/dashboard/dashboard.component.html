@@ -1,0 +1,132 @@
+<!-- src/app/admin/dashboard/dashboard.component.html -->
+<div class="dashboard-container">
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Cargando panel...</p>
+  </div>
+
+  <ng-container *ngIf="!loading">
+
+    <!-- Título -->
+    <div class="dash-header">
+      <h1>Panel de Control</h1>
+      <span class="subtitle">Vista general del negocio</span>
+    </div>
+
+    <!-- ── FILA 1: Ingreso + resumen rápido ─────────────── -->
+    <div class="ingreso-card">
+      <div class="ingreso-info">
+        <span class="ingreso-label">Ingresos Totales</span>
+        <span class="ingreso-monto">S/. {{ stats.ingresoTotal | number:'1.2-2' }}</span>
+        <span class="ingreso-sub">{{ stats.totalPedidos }} pedidos en total</span>
+      </div>
+      <div class="ingreso-icon">💰</div>
+    </div>
+
+    <!-- ── FILA 2: Stats cards ───────────────────────────── -->
+    <div class="stats-grid">
+
+      <div class="stat-card" routerLink="/admin/productos">
+        <div class="stat-icon productos">📦</div>
+        <div class="stat-info">
+          <span class="stat-num">{{ stats.totalProductos }}</span>
+          <span class="stat-label">Productos</span>
+          <span class="stat-sub">{{ stats.productosActivos }} activos</span>
+        </div>
+      </div>
+
+      <div class="stat-card" routerLink="/admin/categorias">
+        <div class="stat-icon categorias">🏷️</div>
+        <div class="stat-info">
+          <span class="stat-num">{{ stats.totalCategorias }}</span>
+          <span class="stat-label">Categorías</span>
+        </div>
+      </div>
+
+      <div class="stat-card" routerLink="/admin/usuarios">
+        <div class="stat-icon usuarios">👥</div>
+        <div class="stat-info">
+          <span class="stat-num">{{ stats.totalUsuarios }}</span>
+          <span class="stat-label">Usuarios</span>
+          <span class="stat-sub stat-warn" *ngIf="stats.usuariosBloqueados > 0">
+            {{ stats.usuariosBloqueados }} bloqueados
+          </span>
+        </div>
+      </div>
+
+      <div class="stat-card" routerLink="/admin/pedidos">
+        <div class="stat-icon pedidos">🛒</div>
+        <div class="stat-info">
+          <span class="stat-num">{{ stats.pedidosPendientes }}</span>
+          <span class="stat-label">Pendientes</span>
+          <span class="stat-sub">{{ stats.pedidosEnPreparacion }} en preparación</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── FILA 3: Accesos rápidos ───────────────────────── -->
+    <div class="accesos-grid">
+      <a class="acceso-card" routerLink="/admin/productos/nuevo">
+        <span class="acceso-icon">➕</span>
+        <span>Nuevo Producto</span>
+      </a>
+      <a class="acceso-card" routerLink="/admin/categorias">
+        <span class="acceso-icon">🏷️</span>
+        <span>Ver Categorías</span>
+      </a>
+      <a class="acceso-card" routerLink="/admin/pedidos">
+        <span class="acceso-icon">📋</span>
+        <span>Ver Pedidos</span>
+      </a>
+      <a class="acceso-card" routerLink="/admin/usuarios">
+        <span class="acceso-icon">👤</span>
+        <span>Ver Usuarios</span>
+      </a>
+      <a class="acceso-card" routerLink="/admin/reportes">
+        <span class="acceso-icon">📊</span>
+        <span>Reportes</span>
+      </a>
+    </div>
+
+    <!-- ── FILA 4: Pedidos recientes ─────────────────────── -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Pedidos Recientes</h2>
+        <a routerLink="/admin/pedidos" class="ver-todos">Ver todos →</a>
+      </div>
+
+      <table *ngIf="pedidosRecientes.length > 0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of pedidosRecientes">
+            <td>#{{ p.idPedido }}</td>
+            <td>{{ p.nombreCliente }}</td>
+            <td>S/. {{ p.total | number:'1.2-2' }}</td>
+            <td>
+              <span [class]="'badge ' + getEstadoClass(p.estado)">
+                {{ p.estado }}
+              </span>
+            </td>
+            <td>{{ p.fecha | date:'dd/MM/yyyy' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="pedidosRecientes.length === 0" class="empty-msg">
+        No hay pedidos aún
+      </div>
+    </div>
+
+  </ng-container>
+</div>

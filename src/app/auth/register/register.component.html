@@ -1,0 +1,86 @@
+<div class="login-container">
+  <div class="login-content">
+
+    <!-- ================= FORMULARIO REGISTRO ================= -->
+    <div class="login-form">
+      <h2>Crear Cuenta</h2>
+
+      <form [formGroup]="registerForm" (ngSubmit)="registrar()">
+
+        <!-- NOMBRE -->
+        <div class="input-group">
+          <input
+            type="text"
+            formControlName="nombre"
+            placeholder="Nombre">
+          <small class="field-error"
+            *ngIf="submitted && f['nombre']?.errors?.['required']">
+            El nombre es obligatorio
+          </small>
+        </div>
+
+        <!-- APELLIDO -->
+        <div class="input-group">
+          <input
+            type="text"
+            formControlName="apellido"
+            placeholder="Apellido">
+          <small class="field-error"
+            *ngIf="submitted && f['apellido']?.errors?.['required']">
+            El apellido es obligatorio
+          </small>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="input-group">
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Correo electrónico">
+          <small class="field-error"
+            *ngIf="submitted && f['email']?.errors?.['required']">
+            El correo es obligatorio
+          </small>
+          <small class="field-error"
+            *ngIf="submitted && f['email']?.errors?.['email']">
+            Correo inválido
+          </small>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="input-group">
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Contraseña">
+          <small class="field-error"
+            *ngIf="submitted && f['password']?.errors?.['required']">
+            La contraseña es obligatoria
+          </small>
+          <small class="field-error"
+            *ngIf="submitted && f['password']?.errors?.['minlength']">
+            Mínimo 6 caracteres
+          </small>
+        </div>
+
+        <!-- BOTÓN -->
+        <button type="submit">
+          Registrarse
+        </button>
+
+      </form>
+
+      <!-- LINK LOGIN -->
+      <p class="register-text">
+        ¿Ya tienes cuenta?
+        <a routerLink="/login">Iniciar sesión</a>
+      </p>
+    </div>
+
+    <!-- ================= IMAGEN ================= -->
+    <div class="login-image">
+      <img src="assets/img/login/polo2C.png" alt="Registro">
+    </div>
+
+  </div>
+</div>

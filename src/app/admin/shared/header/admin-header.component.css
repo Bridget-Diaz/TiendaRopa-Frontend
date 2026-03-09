@@ -1,0 +1,85 @@
+.admin-header {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  width: 220px;
+  background: #601C1D;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.sidebar nav a {
+  display: block;
+  color: white;
+  padding: 10px 0;
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.sidebar nav a.active,
+.sidebar nav a:hover {
+  background-color: #401214;
+}
+
+.topbar {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 30px;
+  background: #fff;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.profile {
+  position: relative;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+
+.dropdown a,
+.dropdown button {
+  display: block;
+  margin-bottom: 5px;
+  background: none;
+  border: none;
+  color: #601C1D;
+  cursor: pointer;
+  text-align: left;
+  padding: 5px 0;
+  font-weight: 500;
+}
+
+.dropdown a:hover,
+.dropdown button:hover {
+  text-decoration: underline;
+}

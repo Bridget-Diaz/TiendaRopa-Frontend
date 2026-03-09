@@ -1,0 +1,63 @@
+<!-- src/app/admin/admin_usuarios/lista-usuarios.component.html -->
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>Usuarios</h2>
+    <span class="total-info">{{ usuarios.length }} registrados</span>
+  </div>
+
+  <div *ngIf="loading" class="loading">Cargando usuarios...</div>
+
+  <div class="table-wrapper" *ngIf="!loading">
+    <table>
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Fecha registro</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of usuarios">
+          <td>
+            <div class="usuario-info">
+              <div class="avatar-inicial">{{ u.nombre.charAt(0).toUpperCase() }}</div>
+              <div>
+                <div class="usuario-nombre">{{ u.nombre }} {{ u.apellido }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="usuario-email">{{ u.email }}</td>
+          <td>
+            <span [class]="getRolClass(u.rol)">{{ u.rol }}</span>
+          </td>
+          <td>
+            <span *ngIf="!u.bloqueado" class="badge-activo">✅ Activo</span>
+            <span *ngIf="u.bloqueado"  class="badge-bloqueado">🔒 Bloqueado</span>
+          </td>
+          <td>{{ u.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+          <td class="acciones" *ngIf="u.rol !== 'administrador'">
+  <button *ngIf="!u.bloqueado"
+          class="btn-bloquear"
+          (click)="toggleBloqueo(u)">
+    🔒 Bloquear
+  </button>
+
+  <button *ngIf="u.bloqueado"
+          class="btn-desbloquear"
+          (click)="toggleBloqueo(u)">
+    🔓 Desbloquear
+  </button>
+</td>
+        </tr>
+        <tr *ngIf="usuarios.length === 0">
+          <td colspan="6" class="empty">No hay usuarios registrados</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

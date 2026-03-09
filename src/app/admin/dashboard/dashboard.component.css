@@ -1,0 +1,241 @@
+/* src/app/admin/dashboard/dashboard.component.css */
+
+.dashboard-container {
+  padding: 28px;
+  background: #f5f5f5;
+  min-height: 100%;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+.dash-header {
+  margin-bottom: 24px;
+}
+.dash-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #601C1D;
+  margin: 0 0 4px;
+}
+.subtitle {
+  font-size: 14px;
+  color: #888;
+}
+
+/* ── Loading ─────────────────────────────────────────── */
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
+  color: #601C1D;
+  gap: 16px;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #f0e0e0;
+  border-top: 4px solid #601C1D;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Ingreso card ────────────────────────────────────── */
+.ingreso-card {
+  background: linear-gradient(135deg, #601C1D, #8b2c2e);
+  color: white;
+  border-radius: 14px;
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(96, 28, 29, 0.3);
+}
+.ingreso-label {
+  display: block;
+  font-size: 13px;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+.ingreso-monto {
+  display: block;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.ingreso-sub {
+  display: block;
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 6px;
+}
+.ingreso-icon {
+  font-size: 52px;
+  opacity: 0.6;
+}
+
+/* ── Stats grid ──────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.stat-icon {
+  font-size: 36px;
+  width: 60px; height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stat-icon.productos   { background: #fde8e8; }
+.stat-icon.categorias  { background: #e8f4fd; }
+.stat-icon.usuarios    { background: #e8fde8; }
+.stat-icon.pedidos     { background: #fdf3e8; }
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+.stat-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: #222;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+  font-weight: 600;
+}
+.stat-sub {
+  font-size: 12px;
+  color: #999;
+  margin-top: 2px;
+}
+.stat-warn { color: #c0392b !important; font-weight: 600; }
+
+/* ── Accesos rápidos ─────────────────────────────────── */
+.accesos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.acceso-card {
+  background: white;
+  border: 2px solid #f0e0e0;
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #601C1D;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.acceso-card:hover {
+  background: #601C1D;
+  color: white;
+  border-color: #601C1D;
+}
+.acceso-icon { font-size: 24px; }
+
+/* ── Section card (pedidos recientes) ────────────────── */
+.section-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.section-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+.ver-todos {
+  font-size: 13px;
+  color: #601C1D;
+  text-decoration: none;
+  font-weight: 600;
+}
+.ver-todos:hover { text-decoration: underline; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead { background: #fdf5f5; }
+thead th {
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #601C1D;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+tbody tr { border-bottom: 1px solid #f9f9f9; }
+tbody tr:hover { background: #fdf8f8; }
+tbody td {
+  padding: 14px 20px;
+  font-size: 13px;
+  color: #444;
+}
+
+/* Badges estado */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.badge-pendiente    { background: #fff3cd; color: #856404; }
+.badge-preparacion  { background: #cce5ff; color: #004085; }
+.badge-enviado      { background: #d4edda; color: #155724; }
+.badge-entregado    { background: #d1ecf1; color: #0c5460; }
+.badge-cancelado    { background: #f8d7da; color: #721c24; }
+
+.empty-msg {
+  padding: 30px;
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+}

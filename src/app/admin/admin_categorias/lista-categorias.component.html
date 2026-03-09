@@ -1,0 +1,81 @@
+<!-- src/app/admin/admin_categorias/lista-categorias.component.html -->
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>Categorías</h2>
+    <button class="btn-nuevo" (click)="abrirNuevo()">+ Nueva Categoría</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Cargando categorías...</div>
+
+  <div class="table-wrapper" *ngIf="!loading">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Productos</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of categorias">
+          <td>{{ c.idCategoria }}</td>
+          <td><strong>{{ c.nombreCategoria }}</strong></td>
+          <td class="desc-col">{{ c.descripcion || '—' }}</td>
+          <td><span class="badge-count">{{ c.totalProductos }}</span></td>
+          <td>
+            <span [class]="c.activo ? 'badge-activo' : 'badge-inactivo'">
+              {{ c.activo ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+          <td class="acciones">
+            <button class="btn-editar" (click)="abrirEditar(c)">✏️ Editar</button>
+            <button class="btn-toggle" (click)="toggleActivo(c)">
+              {{ c.activo ? '🔴 Desactivar' : '🟢 Activar' }}
+            </button>
+            <button class="btn-eliminar" (click)="eliminar(c)">🗑️ Eliminar</button>
+          </td>
+        </tr>
+        <tr *ngIf="categorias.length === 0">
+          <td colspan="6" class="empty">No hay categorías</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal formulario -->
+  <div class="modal-overlay" *ngIf="mostrarForm" (click)="cerrarForm()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ editando ? 'Editar Categoría' : 'Nueva Categoría' }}</h3>
+        <button class="modal-close" (click)="cerrarForm()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input type="text" [(ngModel)]="form.nombreCategoria" placeholder="Ej: POLOS" />
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea [(ngModel)]="form.descripcion" rows="3" placeholder="Descripción..."></textarea>
+        </div>
+        <div class="form-check">
+          <label>
+            <input type="checkbox" [(ngModel)]="form.activo" />
+            Activa
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancelar" (click)="cerrarForm()">Cancelar</button>
+        <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : (editando ? 'Actualizar' : 'Crear') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

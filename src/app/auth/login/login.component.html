@@ -1,0 +1,70 @@
+<div class="login-container">
+
+  <div class="login-content">
+
+    <!-- FORM -->
+    <div class="login-form">
+      <h2>Iniciar Sesión</h2>
+
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+
+        <!-- EMAIL -->
+        <div class="input-group">
+          <input
+            type="email"
+            placeholder="Ej: juan@gmail.com"
+            name="email"
+            [(ngModel)]="email"
+            #emailRef="ngModel"
+            required
+            email
+          >
+          <span class="input-icon">
+            <img src="assets/img/login/user.png">
+          </span>
+
+          <small class="field-error"
+            *ngIf="emailRef.invalid && emailRef.touched">
+            Ingrese un correo válido
+          </small>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="input-group">
+          <input
+            type="password"
+            placeholder="Ej: 123"
+            name="password"
+            [(ngModel)]="password"
+            #passRef="ngModel"
+            required
+            minlength="3"
+          >
+          <span class="input-icon">
+            <img src="assets/img/login/lock.png">
+          </span>
+
+          <small class="field-error"
+            *ngIf="passRef.invalid && passRef.touched">
+            Mínimo 3 caracteres
+          </small>
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid">
+          Iniciar Sesión
+        </button>
+      </form>
+
+      <p class="register-text">
+        ¿No tienes cuenta?
+        <a routerLink="/registro">Crear cuenta</a>
+      </p>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="login-image">
+      <img src="assets/img/login/login1.png">
+    </div>
+
+  </div>
+</div>

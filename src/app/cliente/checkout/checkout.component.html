@@ -1,0 +1,148 @@
+<div class="checkout-page">
+
+  <div class="checkout-header">
+    <button class="btn-back" (click)="volver()">←</button>
+    <h1 class="titulo">FINALIZAR COMPRA</h1>
+  </div>
+
+  <div class="checkout-grid">
+
+    <!-- ============ COLUMNA IZQUIERDA: FORMULARIO ============ -->
+    <div class="formulario-section">
+
+      <!-- DATOS DE ENVÍO -->
+      <div class="form-bloque">
+        <h2 class="bloque-titulo">Datos de envío</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.nombre" placeholder="Tu nombre">
+          </div>
+          <div class="form-group">
+            <label>Apellido <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.apellido" placeholder="Tu apellido">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>DNI <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.dni" placeholder="12345678" maxlength="8">
+          </div>
+          <div class="form-group">
+            <label>Teléfono <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.telefono" placeholder="987654321">
+          </div>
+        </div>
+
+        <div class="form-group full">
+          <label>Dirección <span class="req">*</span></label>
+          <input type="text" [(ngModel)]="form.direccion" placeholder="Av. Ejemplo 123, Dpto 4B">
+        </div>
+
+        <div class="form-group full">
+          <label>Referencia</label>
+          <input type="text" [(ngModel)]="form.referencia" placeholder="Cerca al parque, edificio azul...">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ciudad <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.ciudad" placeholder="Lima">
+          </div>
+          <div class="form-group">
+            <label>Código Postal</label>
+            <input type="text" [(ngModel)]="form.codigoPostal" placeholder="15001">
+          </div>
+        </div>
+      </div>
+
+      <!-- MÉTODO DE PAGO -->
+      <div class="form-bloque">
+        <h2 class="bloque-titulo">Método de pago</h2>
+
+        <div class="metodos-grid">
+
+          <!-- YAPE -->
+          <div class="metodo-card" [class.selected]="metodoPago === 'YAPE'" (click)="seleccionarMetodo('YAPE')">
+            <div class="metodo-icon">📱</div>
+            <div class="metodo-info">
+              <strong>YAPE</strong>
+              <small>Pago inmediato con Yape</small>
+            </div>
+            <div class="metodo-check" *ngIf="metodoPago === 'YAPE'">✓</div>
+          </div>
+
+          <!-- TARJETA -->
+          <div class="metodo-card" [class.selected]="metodoPago === 'TARJETA'" (click)="seleccionarMetodo('TARJETA')">
+            <div class="metodo-icon">💳</div>
+            <div class="metodo-info">
+              <strong>Tarjeta</strong>
+              <small>Débito o crédito</small>
+            </div>
+            <div class="metodo-check" *ngIf="metodoPago === 'TARJETA'">✓</div>
+          </div>
+
+        </div>
+
+        <!-- Info YAPE -->
+        <div class="yape-info" *ngIf="metodoPago === 'YAPE'">
+          <p>📲 Yapea al número <strong>987 654 321</strong> con el monto exacto.</p>
+          <p>Coloca tu nombre completo en el concepto del pago.</p>
+        </div>
+
+        <!-- Info TARJETA -->
+        <div class="tarjeta-info" *ngIf="metodoPago === 'TARJETA'">
+          <p>💳 Al confirmar el pedido, te enviaremos un link de pago seguro a tu correo.</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ============ COLUMNA DERECHA: RESUMEN ============ -->
+    <div class="resumen-box">
+      <h2>Resumen del pedido</h2>
+
+      <div class="resumen-loading" *ngIf="loadingCarrito">
+        <div class="spinner-sm"></div>
+      </div>
+
+      <div class="resumen-items" *ngIf="!loadingCarrito">
+        <div class="resumen-fila" *ngFor="let item of items">
+          <span class="resumen-nombre">
+            {{ item.nombreProducto.length > 22 ? (item.nombreProducto | slice:0:22) + '…' : item.nombreProducto }}
+            <small *ngIf="item.talla"> ({{ item.talla }})</small>
+            × {{ item.cantidad }}
+          </span>
+          <span>S/ {{ item.subtotal | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <div class="resumen-separador"></div>
+
+      <div class="resumen-total">
+        <span>Total a pagar</span>
+        <span class="total-numero">S/ {{ total | number:'1.2-2' }}</span>
+      </div>
+
+      <div class="resumen-metodo" *ngIf="metodoPago">
+        <span class="metodo-tag">{{ metodoPago === 'YAPE' ? '📱 YAPE' : '💳 TARJETA' }}</span>
+      </div>
+
+      <button
+        class="btn-confirmar"
+        (click)="confirmarPedido()"
+        [disabled]="enviando || loadingCarrito">
+        <span *ngIf="!enviando">Confirmar pedido →</span>
+        <span *ngIf="enviando">Procesando...</span>
+      </button>
+
+      <p class="seguridad-nota">
+        🔒 Tus datos están protegidos con encriptación SSL
+      </p>
+    </div>
+
+  </div>
+</div>

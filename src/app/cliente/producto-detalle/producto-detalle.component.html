@@ -1,0 +1,202 @@
+<div class="detalle-page">
+
+  <!-- LOADER -->
+  <div class="loader-container" *ngIf="cargando">
+    <div class="spinner"></div>
+    <p>Cargando producto...</p>
+  </div>
+
+<ng-container *ngIf="producto">
+
+    <!-- ✅ Botón volver FUERA del container -->
+    <div class="header-volver">
+      <button class="btn-volver-lista" routerLink="/producto">
+        ← Volver a productos
+      </button>
+    </div>
+
+    <!-- LAYOUT COMPACTO -->
+    <div class="detalle-container">
+
+      <!-- ================= COLUMNA IZQUIERDA: IMAGEN ================= -->
+      <div class="detalle-columna-izquierda">
+        
+        <!-- Badges -->
+        <div class="badges">
+          <span class="badge nuevo" *ngIf="producto.nuevo">NUEVO</span>
+          <span class="badge destacado" *ngIf="producto.destacado">★ DESTACADO</span>
+          <span class="badge descuento" *ngIf="tieneDescuento">
+            -{{ porcentajeDescuento }}% OFF
+          </span>
+        </div>
+
+        <!-- Imagen principal -->
+        <div class="imagen-principal">
+          <img 
+            *ngFor="let imagen of producto.imagenesUrl; let i = index"
+            [src]="imagen" 
+            [alt]="producto.nombre + ' - Imagen ' + (i + 1)"
+            class="imagen-detalle"
+            [class.active]="imagenDetalleActiva === i">
+        </div>
+
+        <!-- Flechas de navegación -->
+        <button class="carrusel-prev" (click)="anteriorImagen()" *ngIf="producto.imagenesUrl && producto.imagenesUrl.length > 1">
+          ‹
+        </button>
+        <button class="carrusel-next" (click)="siguienteImagen()" *ngIf="producto.imagenesUrl && producto.imagenesUrl.length > 1">
+          ›
+        </button>
+
+        <!-- Miniaturas -->
+        <div class="miniaturas" *ngIf="producto.imagenesUrl && producto.imagenesUrl.length > 1">
+          <div 
+            *ngFor="let imagen of producto.imagenesUrl; let i = index"
+            class="miniatura"
+            [class.active]="imagenDetalleActiva === i"
+            (click)="seleccionarImagen(i)">
+            <img [src]="imagen" [alt]="'Miniatura ' + (i + 1)">
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= COLUMNA DERECHA: INFO COMPACTA ================= -->
+      <div class="detalle-columna-derecha">
+
+        <!-- Categoría tag -->
+        <p class="categoria-tag">{{ producto.categoria }}</p>
+
+        <!-- Título -->
+        <h1 class="producto-titulo">{{ producto.nombre }}</h1>
+
+        <!-- Precio -->
+        <div class="precio-container">
+          <span class="precio-actual">S/ {{ precioFinal.toFixed(2) }}</span>
+          <span class="precio-anterior" *ngIf="tieneDescuento">
+            S/ {{ producto.precio.toFixed(2) }}
+          </span>
+        </div>
+
+        <!-- Stock badge -->
+        <div class="stock-disponible">
+          <span class="check-icon" *ngIf="producto.stock > 0">✓</span>
+          <span class="texto-stock" [class.agotado]="producto.stock === 0">
+            {{ producto.stock > 0 ? 'Disponible (' + producto.stock + ' unidades)' : 'AGOTADO' }}
+          </span>
+        </div>
+
+        <!-- ✅ DESCRIPCIÓN ANTES DE TALLAS -->
+        <div class="descripcion-box" *ngIf="producto.descripcion">
+          <h3>Descripción</h3>
+          <p>{{ producto.descripcion }}</p>
+        </div>
+
+        <!-- ✅ SELECTOR DE TALLAS -->
+        
+        <!-- PRODUCTO NORMAL -->
+        <div class="tallas-section" *ngIf="!producto.esPack && producto.tallasDisponibles && producto.tallasDisponibles.length > 0">
+          <label class="section-label">Selecciona tu talla:</label>
+          <div class="tallas-grid">
+            <button 
+              *ngFor="let talla of producto.tallasDisponibles" 
+              class="talla-btn"
+              [class.selected]="tallaSeleccionada?.idTalla === talla.idTalla" 
+              [class.sin-stock]="!talla.disponible"
+              [disabled]="!talla.disponible" 
+              (click)="seleccionarTalla(talla)">
+              {{ talla.nombreTalla }}
+            </button>
+          </div>
+        </div>
+
+        <!-- PACK CON COMPONENTES -->
+        <div class="pack-section" *ngIf="producto.esPack && producto.componentes">
+          <div class="pack-alert">
+            🎁 Este es un pack - Selecciona tallas para cada componente:
+          </div>
+          
+          <div class="componente-item" *ngFor="let componente of producto.componentes; let i = index">
+            <label class="componente-label">{{ componente.nombreComponente }}</label>
+            
+            <div class="tallas-grid">
+              <button 
+                *ngFor="let talla of componente.tallasDisponibles" 
+                class="talla-btn"
+                [class.selected]="tallasPackSeleccionadas[i]?.idTalla === talla.idTalla"
+                [class.sin-stock]="!talla.disponible"
+                [disabled]="!talla.disponible"
+                (click)="seleccionarTallaPack(i, talla)">
+                {{ talla.nombreTalla }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cantidad y Total -->
+        <div class="cantidad-row">
+          <div class="cantidad-box">
+            <label>Cantidad:</label>
+            <div class="cantidad-controls">
+              <button (click)="decrementarCantidad()" [disabled]="cantidad <= 1">-</button>
+              <span>{{ cantidad }}</span>
+              <button (click)="incrementarCantidad()">+</button>
+            </div>
+          </div>
+
+          <div class="total-box">
+            <span class="total-label">Total:</span>
+            <span class="total-precio">S/ {{ total.toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <!-- Botón agregar al carrito -->
+        <button class="btn-agregar-carrito-full" [disabled]="producto.stock === 0" (click)="agregarAlCarrito()">
+          <span *ngIf="producto.stock > 0">🛒 AGREGAR AL CARRITO</span>
+          <span *ngIf="producto.stock === 0">PRODUCTO AGOTADO</span>
+        </button>
+
+        <!-- ✅ INFO ADICIONAL (3 COLUMNAS) -->
+        <div class="info-envio">
+          <div class="info-card">
+            <span class="info-icon">🚚</span>
+            <div>
+              <strong>Envío rápido</strong>
+              <p>Entrega en 24-48 horas</p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <span class="info-icon">🔒</span>
+            <div>
+              <strong>Pago seguro</strong>
+              <p>Protegemos tus datos</p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <span class="info-icon">↩️</span>
+            <div>
+              <strong>Devoluciones</strong>
+              <p>30 días para devolver</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </ng-container>
+
+  <!-- ERROR -->
+  <div class="sin-producto" *ngIf="!cargando && !producto">
+    <h2>Producto no encontrado</h2>
+    <p>El producto que buscas no existe o fue eliminado.</p>
+    <button class="btn-volver" routerLink="/producto">
+      ← Volver a productos
+    </button>
+  </div>
+
+</div>
+
+<app-footer></app-footer>

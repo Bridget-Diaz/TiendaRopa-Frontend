@@ -1,0 +1,184 @@
+/* ═══════════════════════════════════════════════
+   lista-usuarios.component.css
+═══════════════════════════════════════════════ */
+
+.page-container {
+  padding: 24px;
+}
+
+/* Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  color: #601C1D;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.total-info {
+  font-size: 14px;
+  font-weight: 600;
+  color: #777;
+}
+
+/* Loading */
+.loading {
+  padding: 30px;
+  text-align: center;
+  color: #601C1D;
+  font-weight: 600;
+}
+
+/* Tabla */
+.table-wrapper {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #601C1D;
+  color: white;
+}
+
+thead th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.15s;
+}
+
+tbody tr:hover {
+  background: #fdf5f5;
+}
+
+tbody td {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #444;
+}
+
+/* Usuario info */
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-inicial {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #601C1D;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.usuario-nombre {
+  font-weight: 600;
+  color: #333;
+}
+
+.usuario-email {
+  font-size: 13px;
+  color: #666;
+}
+
+/* Roles */
+.rol-admin {
+  background: #d4edda;
+  color: #155724;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.rol-usuario {
+  background: #e2e3e5;
+  color: #383d41;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Estados */
+.badge-activo {
+  background: #d4edda;
+  color: #155724;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-bloqueado {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Acciones */
+.acciones {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-bloquear,
+.btn-desbloquear {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.btn-bloquear {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.btn-desbloquear {
+  background: #d4edda;
+  color: #155724;
+}
+
+.btn-bloquear:hover,
+.btn-desbloquear:hover {
+  opacity: 0.75;
+}
+
+/* Empty */
+.empty {
+  text-align: center;
+  color: #999;
+  padding: 30px;
+}

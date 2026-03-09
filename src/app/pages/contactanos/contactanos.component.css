@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+:root {
+  --rojo-neon: #FF073A;
+  --blanco: #ffffff;
+  --negro: #000000;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--negro);
+  color: var(--blanco);
+  font-family: 'Inter', sans-serif;
+}
+
+/* HERO CONTACTO */
+.contactanos-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 20px;
+  min-height: 80vh; /* Centrado verticalmente */
+  background: var(--negro);
+}
+
+.contactanos-hero h1 {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 3.5rem;
+  color: var(--blanco);
+  text-shadow: 0 0 5px var(--blanco), 0 0 10px var(--rojo-neon), 0 0 20px var(--rojo-neon);
+  margin-bottom: 20px;
+}
+
+.contactanos-hero h1 span {
+  color: var(--rojo-neon);
+  text-shadow: 0 0 5px var(--rojo-neon), 0 0 10px var(--rojo-neon), 0 0 20px var(--rojo-neon);
+}
+
+.contactanos-hero p {
+  font-size: 1.4rem;
+  color: var(--blanco);
+  text-shadow: 0 0 3px var(--blanco);
+  margin-bottom: 50px;
+  max-width: 600px;
+}
+
+/* BOTÓN INSTAGRAM CENTRADO */
+.contactanos-hero .btn.instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 25px;
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 20px;
+  background: var(--negro);
+  border: 3px solid var(--rojo-neon);
+  color: var(--blanco);
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contactanos-hero .btn.instagram img {
+  width: 80px;
+  height: 80px;
+  border-radius: 15px;
+  border: 3px solid var(--rojo-neon);
+}
+
+.contactanos-hero .btn.instagram:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 30px var(--rojo-neon), 0 0 60px var(--rojo-neon);
+}

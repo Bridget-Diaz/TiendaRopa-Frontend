@@ -1,0 +1,95 @@
+<div class="detalle-page">
+
+  <div class="detalle-header">
+    <button class="btn-back" (click)="volver()">←</button>
+    <h1 class="titulo">DETALLE DEL PEDIDO</h1>
+    <span class="pedido-num" *ngIf="pedido">#{{ pedido.idPedido }}</span>
+  </div>
+
+  <!-- LOADING -->
+  <div class="estado-centro" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando pedido...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div class="estado-centro" *ngIf="error && !loading">
+    <p class="error-msg">{{ error }}</p>
+    <button class="btn-accion" (click)="volver()">Volver</button>
+  </div>
+
+  <!-- CONTENIDO -->
+  <div class="detalle-grid" *ngIf="!loading && !error && pedido">
+
+    <!-- SEGUIMIENTO -->
+    <div class="seccion-card">
+      <h2 class="seccion-titulo">Seguimiento</h2>
+
+      <!-- CANCELADO -->
+      <div class="cancelado-banner" *ngIf="esCancelado()">
+        ❌ Este pedido fue cancelado
+      </div>
+
+      <!-- STEPPER -->
+      <div class="stepper" *ngIf="!esCancelado()">
+        <div
+          class="step"
+          *ngFor="let estado of estados; let i = index"
+          [class.active]="i <= getEstadoIndex()"
+          [class.current]="i === getEstadoIndex()"
+        >
+          <div class="step-circle">
+            <span class="step-icon">{{ estado.icon }}</span>
+          </div>
+          <div class="step-connector" *ngIf="i < estados.length - 1"
+               [class.filled]="i < getEstadoIndex()">
+          </div>
+          <div class="step-label">{{ estado.label }}</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PRODUCTOS -->
+    <div class="seccion-card">
+      <h2 class="seccion-titulo">Productos</h2>
+
+      <div class="producto-row" *ngFor="let item of pedido.items">
+        <div class="producto-info">
+          <p class="producto-nombre">{{ item.nombreProducto }}</p>
+          <span class="producto-talla" *ngIf="item.talla">Talla: <strong>{{ item.talla }}</strong></span>
+          <span class="producto-qty">Cantidad: <strong>{{ item.cantidad }}</strong></span>
+        </div>
+        <div class="producto-precio">
+          <span class="precio-u">S/ {{ item.precioUnitario | number:'1.2-2' }} c/u</span>
+          <span class="precio-sub">S/ {{ item.subtotal | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <div class="total-row">
+        <span>Total</span>
+        <span class="total-valor">S/ {{ pedido.total | number:'1.2-2' }}</span>
+      </div>
+    </div>
+
+    <!-- INFO DEL PEDIDO -->
+    <div class="seccion-card info-card">
+      <h2 class="seccion-titulo">Información</h2>
+      <div class="info-fila">
+        <span class="info-label">Fecha</span>
+        <span>{{ pedido.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <div class="info-fila">
+        <span class="info-label">Método de pago</span>
+        <span>{{ pedido.metodoPago === 'YAPE' ? '📱 YAPE' : '💳 TARJETA' }}</span>
+      </div>
+      <div class="info-fila">
+        <span class="info-label">Estado</span>
+        <span class="estado-inline" [class]="'est-' + pedido.estado.toLowerCase()">
+          {{ pedido.estado }}
+        </span>
+      </div>
+    </div>
+
+  </div>
+</div>

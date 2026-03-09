@@ -1,0 +1,145 @@
+<div class="carrito-page">
+
+  <!-- HEADER -->
+  <div class="carrito-header">
+    <button class="btn-back" (click)="seguirComprando()">←</button>
+    <h1 class="titulo">MI CARRITO</h1>
+    <span class="items-badge" *ngIf="!loading">
+      {{ items.length }} {{ items.length === 1 ? 'producto' : 'productos' }}
+    </span>
+  </div>
+
+  <!-- LOADING -->
+  <div class="estado-centro" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando tu carrito...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div class="estado-centro error-state" *ngIf="error && !loading">
+    <div class="estado-icono">✕</div>
+    <p>{{ error }}</p>
+    <button class="btn-accion" (click)="cargarCarrito()">Reintentar</button>
+  </div>
+
+  <!-- VACÍO -->
+  <div class="estado-centro vacio-state" *ngIf="!loading && !error && items.length === 0">
+    <div class="vacio-icono">
+      <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+    </div>
+    <h2>Tu carrito está vacío</h2>
+    <p>¿Qué esperas? Hay mucho por descubrir.</p>
+    <button class="btn-accion" (click)="seguirComprando()">Explorar productos</button>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="carrito-grid" *ngIf="!loading && !error && items.length > 0">
+
+    <!-- LISTA DE ITEMS -->
+    <div class="items-section">
+
+      <!-- ✅ UN SOLO *ngFor, sin duplicados -->
+      <div
+        class="item-row"
+        *ngFor="let item of items"
+        [class.item-busy]="isActualizando(item.idCarritoItem)"
+      >
+        <div class="item-info">
+          <p class="item-nombre">{{ item.nombreProducto }}</p>
+
+          <!-- Producto simple: muestra la talla -->
+          <span class="item-talla" *ngIf="!item.esPack && item.talla">
+            Talla: <strong>{{ item.talla }}</strong>
+          </span>
+
+          <!-- Pack: muestra cada componente con su talla -->
+          <div class="item-componentes" *ngIf="item.esPack && item.componentes?.length">
+            <span class="componente-tag" *ngFor="let comp of item.componentes">
+              {{ comp.nombreComponente }}: <strong>{{ comp.talla }}</strong>
+            </span>
+          </div>
+
+          <span class="item-precio-u">S/ {{ item.precioUnitario | number:'1.2-2' }} c/u</span>
+        </div>
+
+        <div class="qty-control">
+          <button
+            (click)="cambiarCantidad(item, -1)"
+            [disabled]="item.cantidad <= 1 || isActualizando(item.idCarritoItem)"
+          >−</button>
+          <span>{{ item.cantidad }}</span>
+          <button
+            (click)="cambiarCantidad(item, +1)"
+            [disabled]="isActualizando(item.idCarritoItem)"
+          >+</button>
+        </div>
+
+        <div class="item-subtotal">S/ {{ item.subtotal | number:'1.2-2' }}</div>
+
+        <button
+          class="btn-delete"
+          (click)="eliminar(item.idCarritoItem)"
+          [disabled]="isActualizando(item.idCarritoItem)"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+            <path d="M10 11v6M14 11v6"/>
+          </svg>
+        </button>
+
+        <div class="item-overlay" *ngIf="isActualizando(item.idCarritoItem)">
+          <div class="mini-spin"></div>
+        </div>
+      </div>
+
+      <button class="btn-seguir-link" (click)="seguirComprando()">← Seguir comprando</button>
+    </div>
+
+    <!-- RESUMEN -->
+    <div class="resumen-box">
+      <h2>Resumen del pedido</h2>
+
+      <div class="resumen-items">
+        <div class="resumen-fila" *ngFor="let item of items">
+          <span class="resumen-nombre">
+            {{ item.nombreProducto.length > 25 ? (item.nombreProducto | slice:0:25) + '…' : item.nombreProducto }}
+            <small *ngIf="item.talla"> ({{ item.talla }})</small>
+            × {{ item.cantidad }}
+          </span>
+          <span>S/ {{ item.subtotal | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <div class="resumen-separador"></div>
+
+      <div class="resumen-total">
+        <span>Total</span>
+        <span class="total-numero">S/ {{ total | number:'1.2-2' }}</span>
+      </div>
+
+      <div class="resumen-nota">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="1" y="3" width="15" height="13"/>
+          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+        Envío calculado al confirmar
+      </div>
+
+      <button class="btn-checkout" (click)="irAlCheckout()">
+        Proceder al pago
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</div>

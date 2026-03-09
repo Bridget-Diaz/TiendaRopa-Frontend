@@ -1,0 +1,255 @@
+<div class="productos-page">
+
+  <!-- LAYOUT: Sidebar + Grid -->
+  <div class="productos-container">
+
+    <!-- ================= SIDEBAR DE FILTROS ================= -->
+    <aside class="filtros-sidebar">
+      <div class="sidebar-header">
+        <h2>FILTROS</h2>
+        <button class="btn-limpiar-sidebar" (click)="limpiarFiltros()">
+          🗑️ Limpiar
+        </button>
+      </div>
+
+      <!-- Búsqueda -->
+      <div class="filtro-section">
+        <label class="filtro-label">🔍 BUSCAR</label>
+        <div class="search-input-wrapper">
+          <input 
+            type="text" 
+            class="filtro-input"
+            [(ngModel)]="terminoBusqueda" 
+            (keyup.enter)="aplicarFiltros()"
+            placeholder="Buscar productos...">
+          <button class="search-btn" (click)="aplicarFiltros()">
+            🔎
+          </button>
+        </div>
+      </div>
+
+      <!-- Categorías -->
+      <div class="filtro-section">
+        <label class="filtro-label">📂 CATEGORÍA</label>
+        <select class="filtro-select" [(ngModel)]="categoriaSeleccionada" (change)="onCategoriaChange($event)">
+          <option [value]="null">Todas las categorías</option>
+          <option *ngFor="let cat of categorias" [value]="cat.idCategoria">
+            {{ cat.nombreCategoria }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Precio -->
+      <div class="filtro-section">
+        <label class="filtro-label">💰 PRECIO</label>
+        <div class="precio-range">
+          <input 
+            type="number" 
+            class="filtro-input-small"
+            [(ngModel)]="precioMin" 
+            placeholder="Mín" 
+            (change)="aplicarFiltros()">
+          <span class="precio-separator">-</span>
+          <input 
+            type="number" 
+            class="filtro-input-small"
+            [(ngModel)]="precioMax" 
+            placeholder="Máx" 
+            (change)="aplicarFiltros()">
+        </div>
+        <div class="precio-info">
+          S/ {{ precioMin || 0 }} - S/ {{ precioMax || 500 }}
+        </div>
+      </div>
+
+      <!-- Destacados -->
+      <div class="filtro-section">
+        <label class="filtro-checkbox">
+          <input 
+            type="checkbox" 
+            [(ngModel)]="mostrarDestacados" 
+            (change)="aplicarFiltros()">
+          <span class="checkbox-custom"></span>
+          <span class="checkbox-text">⭐ Solo destacados</span>
+        </label>
+      </div>
+
+      <!-- Botón aplicar -->
+      <button class="btn-aplicar-filtros" (click)="aplicarFiltros()">
+        APLICAR FILTROS
+      </button>
+    </aside>
+
+    <!-- ================= CONTENIDO PRINCIPAL ================= -->
+    <main class="productos-content">
+
+      <!-- LOADER -->
+      <div class="loader" *ngIf="cargando">
+        <div class="spinner"></div>
+        <p>Cargando productos...</p>
+      </div>
+
+      <!-- GRID DE PRODUCTOS -->
+      <div class="productos-grid" [hidden]="cargando">
+
+        <!-- Sin resultados -->
+        <div class="sin-resultados" *ngIf="productosFiltrados.length === 0 && !cargando">
+          <div style="margin-bottom: 20px;">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10" cy="10" r="7" stroke="#999" stroke-width="1.5"/>
+              <line x1="15.5" y1="15.5" x2="21" y2="21" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>No se encontraron productos</h3>
+          <p>Intenta con otros filtros</p>
+        </div>
+
+        <!-- ✅ CAMBIO: Usar productosPaginados en lugar de productosFiltrados -->
+        <div class="producto-card" *ngFor="let producto of productosPaginados">
+
+          <!-- Badge -->
+          <div class="badges">
+            <span class="badge nuevo" *ngIf="producto.nuevo">NUEVO</span>
+            <span class="badge destacado" *ngIf="producto.destacado">★ DESTACADO</span>
+            <span class="badge descuento" *ngIf="tieneDescuento(producto)">
+              -{{ calcularPorcentajeDescuento(producto) }}%
+            </span>
+          </div>
+
+          <!-- Carrusel de imágenes -->
+          <div class="producto-imagen-carrusel">
+            <div class="carrusel-container">
+              <img 
+                *ngFor="let imagen of producto.imagenesUrl; let i = index" 
+                [src]="imagen" 
+                [alt]="producto.nombre + ' - Imagen ' + (i + 1)"
+                class="carrusel-imagen"
+                [class.active]="imagenActiva[producto.idProducto] === i">
+            </div>
+            
+            <div class="carrusel-indicadores">
+              <span 
+                *ngFor="let imagen of producto.imagenesUrl; let i = index"
+                class="indicador"
+                [class.active]="imagenActiva[producto.idProducto] === i"
+                (click)="cambiarImagen(producto.idProducto, i)">
+              </span>
+            </div>
+
+            <div class="hover-overlay">
+              <button class="btn-ver-mas" [routerLink]="['/producto', producto.idProducto]">
+                VER DETALLES
+              </button>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="producto-info">
+            <p class="categoria-tag">{{ producto.categoria }}</p>
+            <h3>{{ producto.nombre }}</h3>
+
+            <div class="precios">
+              <span class="precio-actual">S/ {{ calcularPrecioFinal(producto).toFixed(2) }}</span>
+              <span class="precio-anterior" *ngIf="tieneDescuento(producto)">
+                S/ {{ producto.precio.toFixed(2) }}
+              </span>
+            </div>
+
+            <div class="stock-info">
+              <span class="stock" [class.agotado]="producto.stock === 0">
+                {{ producto.stock > 0 ? 'Stock: ' + producto.stock : 'AGOTADO' }}
+              </span>
+
+              <div class="tallas-preview" 
+                   *ngIf="!producto.esPack && producto.tallasDisponibles && producto.tallasDisponibles.length > 0">
+                <span *ngFor="let talla of producto.tallasDisponibles.slice(0, 4)" 
+                      [class.sin-stock]="!talla.disponible">
+                  {{ talla.nombreTalla }}
+                </span>
+              </div>
+
+              <div class="pack-indicator" *ngIf="producto.esPack">
+                <span class="badge-pack">📦 PACK {{ producto.componentes?.length }} piezas</span>
+              </div>
+            </div>
+
+            <button class="btn-agregar" [disabled]="producto.stock === 0"
+              [routerLink]="['/producto', producto.idProducto]">
+              {{ producto.stock > 0 ? 'AGREGAR AL CARRITO' : 'VER DETALLES' }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ✅ NUEVO: PAGINACIÓN -->
+      <div class="paginacion" *ngIf="productosFiltrados.length > 0 && !cargando">
+        
+        <!-- Info de página actual -->
+        <div class="paginacion-info">
+          Mostrando <strong>{{ (paginaActual - 1) * productosPorPagina + 1 }}</strong> 
+          - 
+          <strong>{{ Math.min(paginaActual * productosPorPagina, productosFiltrados.length) }}</strong> 
+          de 
+          <strong>{{ productosFiltrados.length }}</strong> productos
+        </div>
+
+        <!-- Controles de paginación -->
+        <div class="paginacion-controles">
+          
+          <!-- Primera página -->
+          <button 
+            class="pagina-btn"
+            [disabled]="paginaActual === 1"
+            (click)="irAPrimeraPagina()"
+            title="Primera página">
+            ⏮️
+          </button>
+
+          <!-- Página anterior -->
+          <button 
+            class="pagina-btn"
+            [disabled]="paginaActual === 1"
+            (click)="paginaAnterior()"
+            title="Página anterior">
+            ◀️
+          </button>
+
+          <!-- Números de página -->
+          <button 
+            *ngFor="let pagina of paginasVisibles"
+            class="pagina-btn numero"
+            [class.active]="pagina === paginaActual"
+            (click)="cambiarPagina(pagina)">
+            {{ pagina }}
+          </button>
+
+          <!-- Página siguiente -->
+          <button 
+            class="pagina-btn"
+            [disabled]="paginaActual === totalPaginas"
+            (click)="paginaSiguiente()"
+            title="Página siguiente">
+            ▶️
+          </button>
+
+          <!-- Última página -->
+          <button 
+            class="pagina-btn"
+            [disabled]="paginaActual === totalPaginas"
+            (click)="irAUltimaPagina()"
+            title="Última página">
+            ⏭️
+          </button>
+
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>
